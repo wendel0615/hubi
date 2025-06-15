@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To My Love</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3a3pqb210MGl1ZmR6N2dsYmV3NnZ6ZjJxeGQ4Ymp3aGt2ZGpqcjV0dSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/vbmbi3SbYkgX1MkvMy/giphy.gif') center center/cover no-repeat;
+      z-index: -2;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+
+    .letter {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.8);
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .letter h1 {
+      font-size: 2.5em;
+      color: #e91e63;
+    }
+
+    .letter p {
+      font-size: 1.2em;
+      color: #333;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+    <audio id="bg-music" src="balisong.mp3" loop hidden></audio>
+    <button id="play-music-btn" style="
+        position:fixed;
+        top:40px;
+        right:40px;
+        z-index:100;
+        padding:18px 36px 18px 60px;
+        font-size:1.2em;
+        background: linear-gradient(90deg, #ff8a65 0%, #e91e63 100%);
+        color: #fff;
+        border: none;
+        border-radius: 40px;
+        box-shadow: 0 4px 16px rgba(233,30,99,0.2);
+        cursor: pointer;
+        font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+        font-weight: bold;
+        letter-spacing: 1px;
+        transition: transform 0.1s;
+        outline: none;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    ">
+        <span id="music-icon" style="font-size:1.5em;animation:heart-dance 0.7s infinite alternate;">
+            ▶️
+        </span>
+        Play Music
+    </button>
+    <button id="pause-music-btn" style="
+        position:fixed;
+        top:40px;
+        right:40px;
+        z-index:100;
+        padding:18px 36px 18px 60px;
+        font-size:1.2em;
+        background: linear-gradient(90deg, #e91e63 0%, #ff8a65 100%);
+        color: #fff;
+        border: none;
+        border-radius: 40px;
+        box-shadow: 0 4px 16px rgba(233,30,99,0.2);
+        cursor: pointer;
+        font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+        font-weight: bold;
+        letter-spacing: 1px;
+        transition: transform 0.1s;
+        outline: none;
+        display: none;
+        align-items: center;
+        gap: 12px;
+    ">
+        <span style="font-size:1.5em;animation:heart-dance 0.7s infinite alternate;">
+            ⏸️
+        </span>
+        Pause Music
+    </button>
+    <script>
+        const bgMusic = document.getElementById('bg-music');
+        const playBtn = document.getElementById('play-music-btn');
+        const pauseBtn = document.getElementById('pause-music-btn');
+
+        playBtn.addEventListener('click', function() {
+            bgMusic.play();
+            playBtn.style.display = 'none';
+            pauseBtn.style.display = 'flex';
+            document.getElementById('dancing-heart').style.display = 'none';
+        });
+
+        pauseBtn.addEventListener('click', function() {
+            if (!bgMusic.paused) {
+                bgMusic.pause();
+                pauseBtn.querySelector('span').textContent = '▶️';
+                pauseBtn.childNodes[2].textContent = ' Play Music';
+            } else {
+                bgMusic.play();
+                pauseBtn.querySelector('span').textContent = '⏸️';
+                pauseBtn.childNodes[2].textContent = ' Pause Music';
+            }
+        });
+
+        // Update pauseBtn icon/text on music end
+        bgMusic.addEventListener('pause', function() {
+            pauseBtn.querySelector('span').textContent = '▶️';
+            pauseBtn.childNodes[2].textContent = ' Play Music';
+        });
+        bgMusic.addEventListener('play', function() {
+            pauseBtn.querySelector('span').textContent = '⏸️';
+            pauseBtn.childNodes[2].textContent = ' Pause Music';
+        });
+    </script>
+    <!-- Dancing heart pointing at the button -->
+    <div id="dancing-heart" style="
+        position:fixed;
+        top:10px;
+        right:110px;
+        z-index:101;
+        pointer-events:none;
+        font-size:2.5em;
+        transform: rotate(-25deg);
+        animation: heart-dance 0.7s infinite alternate;
+    ">
+        <span style="display:inline-block;transform:rotate(-20deg);">❤️</span>
+        <span style="display:inline-block;font-size:1.2em;transform:rotate(30deg);margin-left:-10px;">👉</span>
+    </div>
+    <style>
+    @keyframes heart-dance {
+        0% { transform: translateY(0) scale(1) rotate(-25deg);}
+        50% { transform: translateY(-10px) scale(1.15) rotate(-20deg);}
+        100% { transform: translateY(0) scale(1) rotate(-25deg);}
+    }
+    #play-music-btn:active {
+        transform: scale(0.97);
+    }
+    </style>
+    <script>
+        document.getElementById('play-music-btn').addEventListener('click', function() {
+            document.getElementById('bg-music').play();
+            this.style.display = 'none';
+            document.getElementById('dancing-heart').style.display = 'none';
+        });
+
+        // Array of 5 different image URLs
+        const IMAGE_SRCS = [
+            "l1.png",
+            "l2.png",
+            "l3.png",
+            "l4.png",
+            "l5.png",
+            "l6.png",
+            "l7.png",
+            "l8.png",  
+            "l9.png",
+            "l10.png",
+            "l11.png"
+        ];
+        const NUM_IMAGES = 9;
+
+        function randomBetween(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function createFallingImage() {
+            const img = document.createElement('img');
+            img.src = IMAGE_SRCS[Math.floor(Math.random() * IMAGE_SRCS.length)];
+            img.alt = "Floating Picture";
+            img.style.position = 'fixed';
+            img.style.left = `${randomBetween(0, 100)}vw`;
+            img.style.top = `-120px`;
+            img.style.width = '110px';
+            img.style.border = 'none';
+            img.style.borderRadius = '0';
+            img.style.boxShadow = 'none';
+            img.style.pointerEvents = 'none';
+            img.style.zIndex = 10;
+            img.style.transition = 'none';
+            img.style.willChange = 'transform, top, left';
+
+            // Optional: randomize initial rotation for popping effect
+            const initialRotate = randomBetween(-30, 30);
+            img.style.transform = `rotate(${initialRotate}deg) scale(1.05)`;
+
+            document.body.appendChild(img);
+
+            let duration = randomBetween(5, 9); // seconds
+            let start = null;
+            // Randomize horizontal drift and rotation
+            const drift = randomBetween(-30, 30); // px
+            const rotateEnd = initialRotate + randomBetween(-20, 20);
+
+            function animateFalling(ts) {
+                if (!start) start = ts;
+                let progress = (ts - start) / (duration * 1000);
+                if (progress > 1) progress = 1;
+                // Smooth vertical and horizontal movement
+                img.style.top = `calc(${progress * 100}vh - 120px)`;
+                img.style.transform = `translateX(${progress * drift}px) rotate(${initialRotate + (rotateEnd - initialRotate) * progress}deg) scale(1.05)`;
+                if (progress < 1) {
+                    requestAnimationFrame(animateFalling);
+                } else {
+                    // Reset position and randomize everything
+                    img.src = IMAGE_SRCS[Math.floor(Math.random() * IMAGE_SRCS.length)];
+                    img.style.left = `${randomBetween(0, 100)}vw`;
+                    img.style.top = `-120px`;
+                    const newRotate = randomBetween(-30, 30);
+                    img.style.transform = `rotate(${newRotate}deg) scale(1.05)`;
+                    duration = randomBetween(5, 9);
+                    start = null;
+                    requestAnimationFrame(animateFalling);
+                }
+            }
+            requestAnimationFrame(animateFalling);
+        }
+
+        for (let i = 0; i < NUM_IMAGES; i++) {
+            setTimeout(createFallingImage, i * 600);
+        }
+    </script>
+  <div class="background"></div>
+  <div class="overlay"></div>
+<!-- Envelope Container -->
+ <br>
+        <br>
+        <br><br>
+        <br>
+        <br>
+        <br>
+        <br><br>
+        <br>
+        <br>
+<div class="envelope-container">
+    <div class="envelope" id="envelope">
+        <div class="envelope-flap"></div>
+        <div class="envelope-back"></div>
+        <div class="envelope-front"></div>
+        <div class="envelope-shadow"></div>
+        
+        <div class="envelope-letter" id="envelope-letter">
+            <div class="letter-content" id="letter-content" style="min-height: 120px;"></div>
+            <button class="close-envelope-btn" id="close-envelope-btn" aria-label="Close Letter" style="margin-top:18px;display:none;background:linear-gradient(90deg,#e91e63 0%,#ff8a65 100%);color:#fff;border:none;border-radius:40px;box-shadow:0 4px 16px rgba(233,30,99,0.13);cursor:pointer;font-family:'Comic Sans MS','Comic Sans',cursive,sans-serif;font-weight:bold;letter-spacing:1px;font-size:1em;padding:10px 28px 10px 38px;display:flex;align-items:center;gap:10px;">
+                <span style="font-size:1.3em;">❌</span> Close Letter
+            </button>
+        </div>
+        <button class="open-envelope-btn" id="open-envelope-btn" aria-label="Open Envelope">
+            <span>💌</span> Open Letter
+        </button>
+    </div>
+    <script>
+        // Show close button when letter is open
+        document.getElementById('open-envelope-btn').addEventListener('click', function() {
+            document.getElementById('envelope').classList.add('open');
+            setTimeout(() => {
+                const letterContent = document.getElementById('letter-content');
+                typeWriterEffect(letterContent, letterHTML, 22);
+                document.getElementById('close-envelope-btn').style.display = 'flex';
+            }, 400);
+        });
+
+        // Close letter functionality
+        document.getElementById('close-envelope-btn').addEventListener('click', function() {
+            document.getElementById('envelope').classList.remove('open');
+            document.getElementById('letter-content').innerHTML = '';
+            this.style.display = 'none';
+        });
+    </script>
+    <style>
+    .envelope-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        width: 100vw;
+        position: relative;
+        z-index: 20;
+    }
+    .envelope {
+        position: relative;
+        width: 440px;
+        max-width: 92vw;
+        height: 220px;
+        perspective: 1200px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+    }
+    .envelope-flap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 60%;
+        background: linear-gradient(135deg, #fff 60%, #ffe0ec 100%);
+        border-top-left-radius: 18px;
+        border-top-right-radius: 18px;
+        z-index: 3;
+        transform-origin: top center;
+        transition: transform 0.8s cubic-bezier(.77,0,.18,1);
+        box-shadow: 0 4px 16px rgba(233,30,99,0.08);
+        border-bottom: 1px solid #e91e63;
+    }
+    .envelope-front {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 70%;
+        background: linear-gradient(90deg, #fff 60%, #ffe0ec 100%);
+        border-bottom-left-radius: 18px;
+        border-bottom-right-radius: 18px;
+        z-index: 2;
+        box-shadow: 0 8px 32px rgba(233,30,99,0.10);
+        border-top: 1px solid #e91e63;
+    }
+    .envelope-letter {
+        position: absolute;
+        left: 50%;
+        bottom: 20px;
+        transform: translate(-50%, 0) scale(0.98);
+        width: 900%;
+        max-width: 300px;
+        background: rgba(255,255,255,0.97);
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(233,30,99,0.10);
+        padding: 28px 18px 24px 18px;
+        z-index: 4;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.7s cubic-bezier(.77,0,.18,1), transform 0.7s cubic-bezier(.77,0,.18,1);
+    }
+    .letter-content h1 {
+        font-size: 1.7em;
+        color: #e91e63;
+        margin-bottom: 0.5em;
+    }
+    .letter-content p {
+        font-size: 1.08em;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+    }
+    .open-envelope-btn {
+        position: absolute;
+        left: 50%;
+        bottom: -54px;
+        transform: translateX(-50%);
+        background: linear-gradient(90deg, #ff8a65 0%, #e91e63 100%);
+        color: #fff;
+        border: none;
+        border-radius: 40px;
+        box-shadow: 0 4px 16px rgba(233,30,99,0.13);
+        cursor: pointer;
+        font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+        font-weight: bold;
+        letter-spacing: 1px;
+        font-size: 1.1em;
+        padding: 14px 32px 14px 48px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 5;
+        transition: transform 0.1s;
+    }
+    .open-envelope-btn:active {
+        transform: translateX(-50%) scale(0.97);
+    }
+    .open-envelope-btn span {
+        font-size: 1.5em;
+        animation: heart-dance 0.7s infinite alternate;
+    }
+    .envelope.open .envelope-flap {
+        transform: rotateX(-120deg);
+    }
+    .envelope.open .envelope-letter {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translate(-50%, -60px) scale(1.04);
+    }
+    .envelope.open .open-envelope-btn {
+        display: none;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 600px) {
+        .envelope {
+        width: 98vw;
+        height: 170px;
+        min-width: 0;
+        }
+        .envelope-letter {
+        max-width: 96vw;
+        padding: 18px 6vw 18px 6vw;
+        font-size: 0.98em;
+        }
+        .open-envelope-btn {
+        font-size: 1em;
+        padding: 12px 18px 12px 38px;
+        }
+        .letter-content h1 {
+        font-size: 1.2em;
+        }
+    }
+    </style>
+    <script>
+        
+    const letterHTML = `
+        <h1>To my Hubi,</h1>
+        <p>
+        Happy 11th Monthsary, Hubi! 💖
+
+            Almost a year with you, and every day still feels 
+            special. Thank you for the love, the laughter, 
+            and the memories we've made together. I know 
+            we're not perfect sometimes we argue, sometimes
+            we misunderstand each other. But even in those 
+            moments, I hope you still love me the same. Sana 
+            kahit nag-aaway tayo, piliin mo pa rin akong mahalin.
+            <br><br>
+            Please always show me that I matter to you, 
+            not just in words but in how you treat me kindly, 
+            gently, and with love. I don't expect perfection, 
+            just your effort to keep choosing me even on the 
+            hard days.
+            <br><br>
+            I still love you inspite everything, Hubi. Thank you for being mine 
+            for the past 11 months. Here's to many more months 
+            of growing, learning, and loving together. 💕
+            <br><br>
+            Love Hubi <span style="font-size:1.3em;">❤️</span>
+        </p>
+    `;
+
+    function typeWriterEffect(element, html, speed = 22) {
+        let i = 0;
+        let tag = '';
+        let isTag = false;
+        let output = '';
+
+        function type() {
+        if (i < html.length) {
+            let char = html[i];
+            if (char === '<') {
+            isTag = true;
+            tag = '';
+            }
+            if (isTag) {
+            tag += char;
+            if (char === '>') {
+                output += tag;
+                isTag = false;
+            }
+            } else {
+            output += char;
+            }
+            element.innerHTML = output + (isTag ? '' : '<span class="caret" style="opacity:0.5;">|</span>');
+            i++;
+            setTimeout(type, isTag ? 0 : speed);
+        } else {
+            element.innerHTML = output;
+        }
+        }
+        type();
+    }
+
+    document.getElementById('open-envelope-btn').addEventListener('click', function() {
+        document.getElementById('envelope').classList.add('open');
+        setTimeout(() => {
+        const letterContent = document.getElementById('letter-content');
+        typeWriterEffect(letterContent, letterHTML, 22);
+        }, 400); // Wait for envelope animation
+    });
+    </script>
+</body>
+</html>
