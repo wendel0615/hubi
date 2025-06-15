@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To My Love</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2syYWoxcnBtOGRjcWliemtmbnJtYTJ6eDBzeHZlN3ZybjRmeGpkNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xTcnT2ZYSaCTdkTSmI/giphy.gif') center center/cover no-repeat;
+      z-index: -2;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+
+    .letter {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.8);
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .letter h1 {
+      font-size: 2.5em;
+      color: #e91e63;
+    }
+
+    .letter p {
+      font-size: 1.2em;
+      color: #333;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+    <audio id="bg-music" src="Fallen(256k).mp3" loop hidden></audio>
+    <button id="play-music-btn" style="
+        position:fixed;
+        top:40px;
+        right:40px;
+        z-index:100;
+        padding:18px 36px 18px 60px;
+        font-size:1.2em;
+        background: linear-gradient(90deg, #ff8a65 0%, #e91e63 100%);
+        color: #fff;
+        border: none;
+        border-radius: 40px;
+        box-shadow: 0 4px 16px rgba(233,30,99,0.2);
+        cursor: pointer;
+        font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+        font-weight: bold;
+        letter-spacing: 1px;
+        transition: transform 0.1s;
+        outline: none;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    ">
+        <span style="font-size:1.5em;animation:heart-dance 0.7s infinite alternate;">
+            ❤️
+        </span>
+        Play Music
+    </button>
+    <!-- Dancing heart pointing at the button -->
+    <div id="dancing-heart" style="
+        position:fixed;
+        top:10px;
+        right:110px;
+        z-index:101;
+        pointer-events:none;
+        font-size:2.5em;
+        transform: rotate(-25deg);
+        animation: heart-dance 0.7s infinite alternate;
+    ">
+        <span style="display:inline-block;transform:rotate(-20deg);">❤️</span>
+        <span style="display:inline-block;font-size:1.2em;transform:rotate(30deg);margin-left:-10px;">👉</span>
+    </div>
+    <style>
+    @keyframes heart-dance {
+        0% { transform: translateY(0) scale(1) rotate(-25deg);}
+        50% { transform: translateY(-10px) scale(1.15) rotate(-20deg);}
+        100% { transform: translateY(0) scale(1) rotate(-25deg);}
+    }
+    #play-music-btn:active {
+        transform: scale(0.97);
+    }
+    </style>
+    <script>
+            document.getElementById('play-music-btn').addEventListener('click', function() {
+                    document.getElementById('bg-music').play();
+                    this.style.display = 'none';
+                    document.getElementById('dancing-heart').style.display = 'none';
+            });
+
+            // Array of 5 different image URLs
+            const IMAGE_SRCS = [
+            "1.png",
+            "2.png",
+            "3.png",
+            "4.png",
+        ];
+        const NUM_IMAGES = 8;
+
+        function randomBetween(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function createFallingImage() {
+            const img = document.createElement('img');
+            // Pick a random image from the array
+            img.src = IMAGE_SRCS[Math.floor(Math.random() * IMAGE_SRCS.length)];
+            img.alt = "Floating Picture";
+            img.style.position = 'fixed';
+            img.style.left = `${randomBetween(0, 100)}vw`;
+            img.style.top = `-100px`;
+            img.style.width = '80px';
+            img.style.borderRadius = '0';
+            img.style.boxShadow = 'none';
+            img.style.width = '110px';
+            img.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+            img.style.pointerEvents = 'none';
+            img.style.zIndex = 10;
+
+            document.body.appendChild(img);
+
+            let duration = randomBetween(4, 8); // seconds
+            let start = null;
+
+            function animateFalling(ts) {
+                if (!start) start = ts;
+                let progress = (ts - start) / (duration * 1000);
+                img.style.top = `${progress * 100}vh`;
+                if (progress < 1) {
+                    requestAnimationFrame(animateFalling);
+                } else {
+                    // Reset position and randomize horizontal position and image
+                    img.src = IMAGE_SRCS[Math.floor(Math.random() * IMAGE_SRCS.length)];
+                    img.style.left = `${randomBetween(0, 100)}vw`;
+                    img.style.top = `-100px`;
+                    duration = randomBetween(4, 8);
+                    start = null;
+                    requestAnimationFrame(animateFalling);
+                }
+            }
+            requestAnimationFrame(animateFalling);
+        }
+
+        for (let i = 0; i < NUM_IMAGES; i++) {
+            setTimeout(createFallingImage, i * 600);
+        }
+    </script>
+  <div class="background"></div>
+  <div class="overlay"></div>
+  <div class="letter">
+    <h1>My Dearest Love</h1>
+    <p>
+      Hi Sungit! Just want you to know how much I LOVE YOU!
+      You're the reason i love sunsets, the reason I wake up with a smile every day.
+      <br><br>
+      With all my love,<br>
+      Yanaboo ❤️XOXO
+    </p>
+  </div>
+</body>
+</html>
